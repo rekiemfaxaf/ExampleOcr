@@ -6,6 +6,7 @@ package com.example.pipef.exampleocr.contants;
 
 public class Constants {
     public static final String CP_REGEX = "pc\\d+";
-    public static final String HP_REGEX = "PS+ +\\d+";
-    public static final String DUST_REGEX = "pc\\d+";
+    public static final String HP_REGEX = "ps+\\d+";
+    public static final String DUST_REGEX = "\\d+";
+    public static final String NAME_REGEX = "\\b\\w+";
 }

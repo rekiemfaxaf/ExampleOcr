@@ -1,6 +1,7 @@
 package com.example.pipef.exampleocr;
 
 import android.content.Intent;
+import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
@@ -23,6 +25,10 @@ import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
     Bitmap image; //our image
+    Bitmap imagePC;
+    Bitmap imageHP;
+    Bitmap imageDust;
+    Bitmap imageName;
     private TessBaseAPI mTess; //Tess API reference
     String datapath = ""; //path to folder containing language data file
 
@@ -35,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //init image
-        //image = BitmapFactory.decodeResource(getResources(), R.drawable.test_imagen);
 
         imageView = (ImageView)findViewById(R.id.imageView);
         button = (Button)findViewById(R.id.IMGButton);
@@ -102,19 +105,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void processImage(View view){
+    public void processImage(){
         TextView OCRTextView = (TextView) findViewById(R.id.OCRTextView);
+        TextView OCRTextView2 = (TextView) findViewById(R.id.OCRTextView2);
+        TextView OCRTextView3 = (TextView) findViewById(R.id.OCRTextView3);
+        TextView OCRTextView4 = (TextView) findViewById(R.id.OCRTextView4);
+
         if(image != null) {
             String OCRresult = null;
-            mTess.setImage(image);
+            mTess.setImage(imagePC);
             OCRresult = mTess.getUTF8Text();
-            OCRTextView.setText(OCRresult);
+            DataGetter data = new DataGetter();
+            OCRTextView.setText("PC: "+data.getCp(OCRresult).toString());
 
+            OCRresult = null;
+            mTess.setImage(imageHP);
+            OCRresult = mTess.getUTF8Text();
+            data = new DataGetter();
+            OCRTextView2.setText("PS: "+data.getHp(OCRresult).toString());
 
+            OCRresult = null;
+            mTess.setImage(imageName);
+            OCRresult = mTess.getUTF8Text();
+            data = new DataGetter();
+            OCRTextView3.setText("Nombre: "+data.getName(OCRresult));
+
+            OCRresult = null;
+            mTess.setImage(imageDust);
+            OCRresult = mTess.getUTF8Text();
+            data = new DataGetter();
+            OCRTextView4.setText("Polvos: "+data.getDust(OCRresult));
         }else{
             OCRTextView.setText("Selecciona una imagen primero");
         }
-
     }
 
     private void openGallery(){
@@ -127,37 +150,17 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             imageUri = data.getData();
-            imageView.setImageURI(imageUri);
             try {
-                image = decodeBitmap(imageUri );
+                image = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
+                imagePC = Bitmap.createBitmap(image,500,170,480,120);
+                imageHP = Bitmap.createBitmap(image,500,1350,480,80);
+                imageDust = Bitmap.createBitmap(image,790,2030,160,80);
+                imageName = Bitmap.createBitmap(image,350,1140,800,160);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            ImageView imageView = (ImageView) findViewById(R.id.imageView);
             imageView.setImageBitmap(image);
+            processImage();
         }
-    }
-
-    public  Bitmap decodeBitmap(Uri selectedImage) throws FileNotFoundException {
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
-
-        final int REQUIRED_SIZE = 1500;
-
-        int width_tmp = o.outWidth, height_tmp = o.outHeight;
-        int scale = 1;
-        while (true) {
-            if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE) {
-                break;
-            }
-            width_tmp /= 2;
-            height_tmp /= 2;
-            scale *= 2;
-        }
-
-        BitmapFactory.Options o2 = new BitmapFactory.Options();
-        o2.inSampleSize = scale;
-        return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
     }
 }
