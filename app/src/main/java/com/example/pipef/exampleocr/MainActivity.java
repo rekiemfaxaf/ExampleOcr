@@ -152,10 +152,32 @@ public class MainActivity extends AppCompatActivity {
             imageUri = data.getData();
             try {
                 image = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
-                imagePC = Bitmap.createBitmap(image,500,170,480,120);
-                imageHP = Bitmap.createBitmap(image,500,1350,480,80);
-                imageDust = Bitmap.createBitmap(image,790,2030,160,80);
-                imageName = Bitmap.createBitmap(image,350,1140,800,160);
+                Integer alto = image.getHeight();
+                Integer ancho = image.getWidth();
+                //calcular todos los valores del rectagunlo
+                Integer ubicacionImagenPrcntA = (int)(ancho * (33.33334f /100.0f));
+                Integer ubicacionImagenPrcntb = (int)(alto * (5.859375f /100.0f));
+                Integer ubicacionImagenPrcntc = (int)(ancho * (33.33334f /100.0f));
+                Integer ubicacionImagenPrcntd = (int)(alto * (5.468750f /100.0f));
+                imagePC = Bitmap.createBitmap(image,ubicacionImagenPrcntA,ubicacionImagenPrcntb,ubicacionImagenPrcntc,ubicacionImagenPrcntd);
+                //calcular todos los valores del rectagunlo
+                ubicacionImagenPrcntA = (int)(ancho * (34.72223f /100.0f));
+                ubicacionImagenPrcntb = (int)(alto * (52.734375f /100.0f));
+                ubicacionImagenPrcntc = (int)(ancho * (33.33334f /100.0f));
+                ubicacionImagenPrcntd = (int)(alto * (3.906250f /100.0f));
+                imageHP = Bitmap.createBitmap(image,ubicacionImagenPrcntA,ubicacionImagenPrcntb,ubicacionImagenPrcntc,ubicacionImagenPrcntd);
+                //calcular todos los valores del rectagunlo
+                ubicacionImagenPrcntA = (int)(ancho * (54.861112f /100.0f));
+                ubicacionImagenPrcntb = (int)(alto * (79.296875f /100.0f));
+                ubicacionImagenPrcntc = (int)(ancho * (11.11112f /100.0f));
+                ubicacionImagenPrcntd = (int)(alto * (3.1250f /100.0f));
+                imageDust = Bitmap.createBitmap(image,ubicacionImagenPrcntA,ubicacionImagenPrcntb,ubicacionImagenPrcntc,ubicacionImagenPrcntd);
+                //calcular todos los valores del rectagunlo
+                ubicacionImagenPrcntA = (int)(ancho * (24.305556f /100.0f));
+                ubicacionImagenPrcntb = (int)(alto * (44.531250f /100.0f));
+                ubicacionImagenPrcntc = (int)(ancho * (55.555556f /100.0f));
+                ubicacionImagenPrcntd = (int)(alto * (6.250f /100.0f));
+                imageName = Bitmap.createBitmap(image,ubicacionImagenPrcntA,ubicacionImagenPrcntb,ubicacionImagenPrcntc,ubicacionImagenPrcntd);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -163,4 +185,6 @@ public class MainActivity extends AppCompatActivity {
             processImage();
         }
     }
+
+
 }
