@@ -1,5 +1,6 @@
 package com.example.pipef.exampleocr;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     Bitmap image; //our image
     Bitmap imagePC;
     Bitmap imageHP;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         button = (Button)findViewById(R.id.IMGButton);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
-                    public void onClick(View v){
+            public void onClick(View v){
                 openGallery();
             }
         });

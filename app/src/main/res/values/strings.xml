@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ExampleOcr</string>
+    <string name="app_name">Pokemon IVS</string>
+    <string name="btton_select_image">Selecciona una Imagen</string>
 </resources>
